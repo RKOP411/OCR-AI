@@ -1,4 +1,4 @@
-# ocr_main.py - 自动生成日期列
+# ocr_main.py - 修复版本
 import os
 import sys
 import tkinter as tk
@@ -353,6 +353,8 @@ class OCRApp:
     
     def do_ocr(self):
         """执行OCR识别"""
+        error_msg = None  # 用于存储错误信息
+        
         try:
             self.root.after(0, lambda: self.status_bar.config(text="正在识别..."))
             self.root.after(0, lambda: self.root.config(cursor="watch"))
@@ -389,10 +391,11 @@ class OCRApp:
             self.root.after(0, lambda: self.update_result(text))
             
         except Exception as e:
-            self.root.after(0, lambda: messagebox.showerror("OCR错误", str(e)))
+            error_msg = str(e)  # 保存错误信息
+            self.root.after(0, lambda: messagebox.showerror("OCR错误", error_msg))
         finally:
             self.root.after(0, lambda: self.progress_bar.stop())
-            self.root.after(0, lambda: self.status_bar.config(text="识别完成"))
+            self.root.after(0, lambda: self.status_bar.config(text="识别完成" if not error_msg else "识别失败"))
             self.root.after(0, lambda: self.root.config(cursor=""))
             self.is_processing = False
     
