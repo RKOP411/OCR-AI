@@ -104,24 +104,28 @@ def sort_cells_by_position(cells, h):
 
 # ---------- TrOCR识别函数 ----------
 def recognize_with_trocr(image):
-    """使用TrOCR识别单个单元格图像"""
     try:
-        # 转换为PIL图像（TrOCR需要）
-        if len(image.shape) == 3:
-            image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        # 1. 如果图像是灰度图(单通道)，转成 3 通道 RGB
+        if len(image.shape) == 2:
+            image_rgb = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
         else:
-            image_rgb = image
+            # 如果是 BGR (OpenCV默认)，转成 RGB
+            image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        
+        # 2. 转换为 PIL 图片
         pil_image = Image.fromarray(image_rgb)
         
-        # 处理并生成
+        # 3. 送入 TrOCR 识别
         pixel_values = processor(images=pil_image, return_tensors="pt").pixel_values
         pixel_values = pixel_values.to(device)
         
         generated_ids = model.generate(pixel_values, max_length=64)
         text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
         
-        # 清理空白字符
+        # 4. 后处理：把冒号替换回小数点 (针对你这种表格数字场景)
         text = text.strip()
+        text = text.replace(':', '.').replace(',', '.') # 修正常见的错误
+        
         return text if text else ""
     except Exception as e:
         print(f"   ⚠️ TrOCR识别错误: {e}")
@@ -194,7 +198,7 @@ def process_table_image(image_path, label_path, output_csv="table_output.csv", d
 
 # ---------- 主程序入口 ----------
 if __name__ == "__main__":
-    label_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\labels\data_Image1- clear.txt"
+    label_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\labels\data_Image1.txt"
     image_path = r"C:\OCR-AI\src\img\data_Image1.jpeg"
     
     df = process_table_image(

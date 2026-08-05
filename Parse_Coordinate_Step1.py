@@ -33,8 +33,8 @@ def get_bounding_box(polygon):
 # ---------- 主程序入口 ----------
 if __name__ == "__main__":
     # 设置正确的路径
-    label_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\labels\data_Image1- clear.txt"
-    image_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\data_Image1- clear.jpeg"
+    label_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\labels\data_Image1.txt"
+    image_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\data_Image1.jpeg"
     
     # 读取图片
     img = cv2.imread(image_path)

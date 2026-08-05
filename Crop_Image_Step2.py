@@ -177,8 +177,8 @@ def process_table_image(image_path, label_path, output_csv="table_output.csv", d
 # ---------- 主程序入口 ----------
 if __name__ == "__main__":
     # 设置路径（根据你的实际路径修改）
-    label_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\labels\data_Image1- clear.txt"
-    image_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\data_Image1- clear.jpeg"
+    label_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\labels\data_Image1.txt"
+    image_path = r"C:\OGHFYOLO\runs\predict-seg\exp7\data_Image1.jpeg"
     
     # 执行处理
     df = process_table_image(
