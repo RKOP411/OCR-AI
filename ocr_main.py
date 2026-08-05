@@ -1,4 +1,4 @@
-# ocr_main.py - 修复版本
+# ocr_main.py - Tesseract 
 import os
 import sys
 import tkinter as tk
@@ -31,7 +31,7 @@ class OCRApp:
         # 设置拖拽
         self.setup_drag_drop()
         
-        # 硬编码的表头（不包含日期列，日期自动生成）
+        # 硬编码的表头（不包含日期列，日期自动生成, 1日,2日,3日..）
         self.table_headers = [
             "現金（機1表）", 
             "現金（機2表）", 
